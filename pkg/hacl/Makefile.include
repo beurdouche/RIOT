@@ -1,1 +1,1 @@
-INCLUDES += -I$(PKGDIRBASE)/libhacl/snapshots/hacl-c
+INCLUDES += -I$(PKGDIRBASE)/hacl/snapshots/hacl-c
