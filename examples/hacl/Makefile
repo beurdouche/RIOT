@@ -22,7 +22,6 @@ RIOTBASE ?= $(CURDIR)/../..
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the
 # development process:
-CFLAGS += -DDEVELHELP -Wno-typedef-redefinition
 
 # Change this to 0 show compiler invocation lines by default:
 QUIET ?= 1
@@ -35,3 +34,11 @@ USEMODULE += shell_commands
 USEMODULE += ps
 
 include $(RIOTBASE)/Makefile.include
+
+CFLAGS += -DDEVELHELP -Wno-unused-parameter -Wno-unused-variable
+
+ifneq (,$(filter iotlab-m3,$(BOARD)))
+	CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-error=strict-prototypes -Wno-error=old-style-definition
+else
+	CFLAGS += -Wno-typedef-redefinition -Wno-shift-op-parentheses
+endif
