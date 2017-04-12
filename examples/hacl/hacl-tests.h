@@ -18,6 +18,9 @@
  * @}
  */
 
+#ifndef __Hacl_Tests_H
+#define __Hacl_Tests_H
+
 #include <stdio.h>
 #include "kremlib.h"
 #include "testlib.h"
@@ -332,8 +335,8 @@ chacha_nonce[12] =
       (uint8_t )0
     };
 
-int32_t test_chacha();
-int32_t perf_chacha();
+int32_t test_chacha(void);
+int32_t perf_chacha(void);
 
 
   uint8_t
@@ -554,8 +557,8 @@ int32_t perf_chacha();
     };
 
 
-int32_t test_curve();
-int32_t perf_curve();
+int32_t test_curve(void);
+int32_t perf_curve(void);
 
 
 uint8_t
@@ -654,5 +657,7 @@ poly_key[32] =
       (uint8_t )0x1b
     };
 
-int32_t test_poly();
-int32_t perf_poly();
+int32_t test_poly(void);
+int32_t perf_poly(void);
+
+#endif
