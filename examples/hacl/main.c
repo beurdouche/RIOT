@@ -24,14 +24,14 @@
 #include "Chacha20.h"
 
 
-void print_results(char *txt, double t1, unsigned long long d1, int rounds, int plainlen){
+void print_results(char *txt, double t1, int rounds, int plainlen){
   printf("Testing: %s\n", txt);
-  printf("Cycles for %d times %d bytes: %llu (%.2fcycles/byte)\n", rounds, plainlen, d1, (double)d1/plainlen/rounds);
+  //  printf("Cycles for %d times %d bytes: %llu (%.2fcycles/byte)\n", rounds, plainlen, d1, (double)d1/plainlen/rounds);
   printf("User time for %d times %d bytes: %f (%fus/byte)\n", rounds, plainlen, t1/CLOCKS_PER_SEC, (double)t1*1000000/CLOCKS_PER_SEC/plainlen/rounds);
 }
 
-#define PLAINLEN 256
-#define ROUNDS 1
+#define PLAINLEN (16*1024)
+#define ROUNDS 3000
 #define MACSIZE 32
 
 
@@ -330,7 +330,7 @@ int32_t test_chacha()
   uint8_t ciphertext[len];
   memset(ciphertext, 0, len * sizeof ciphertext[0]);
   uint32_t counter = (uint32_t )1;
-  //  uint32_t ctx[32] = { 0 };
+
   Chacha20_chacha20(ciphertext,plaintext,len, key, nonce, counter);
   TestLib_compare_and_print("HACL Chacha20", expected, ciphertext, len);
 
@@ -344,6 +344,7 @@ int32_t perf_chacha() {
   uint32_t len = PLAINLEN * sizeof(char);
   uint8_t* plain = malloc(len);
   uint8_t* cipher = malloc(len);
+
   int fd = open("/dev/urandom", O_RDONLY);
   uint64_t res = read(fd, plain, len);
   if (res != len) {
@@ -352,56 +353,35 @@ int32_t perf_chacha() {
   }
 
   uint32_t counter = (uint32_t )1;
-  //  uint32_t ctx[32] = { 0 };
-
-  cycles a,b;
   clock_t t1,t2;
 
   t1 = clock();
-  a = TestLib_cpucycles_begin();
   for (int i = 0; i < ROUNDS; i++){
     Chacha20_chacha20(plain,plain,len, key, nonce, counter);
     plain[0] = cipher[0];
   }
-  b = TestLib_cpucycles_end();
   t2 = clock();
-  print_results("HACL ChaCha20 speed", (double)t2-t1,
-		(double) b - a, ROUNDS, PLAINLEN);
-  for (int i = 0; i < PLAINLEN; i++)
-    res += (uint64_t) plain[i];
-  printf("Composite result (ignore): %llx\n", res);
 
-  /* t1 = clock(); */
-  /* a = TestLib_cpucycles_begin(); */
-  /* for (int i = 0; i < ROUNDS; i++){ */
-  /*   crypto_stream_chacha20_ietf_xor(plain,plain, len, nonce, key); */
-  /* } */
-  /* b = TestLib_cpucycles_end(); */
-  /* t2 = clock(); */
-  /* print_results("Sodium ChaCha20 speed", (double)t2-t1, */
-  /*  	(double) b - a, ROUNDS, PLAINLEN); */
-  /* for (int i = 0; i < PLAINLEN; i++)  */
-  /*   res += (uint64_t) plain[i]; */
-  /* printf("Composite result (ignore): %llx\n", res); */
+  print_results("HACL ChaCha20 speed", (double)t2-t1, ROUNDS, PLAINLEN);
 
   return exit_success;
 }
 
 int main(void)
 {
+  printf("You are running RIOT on a(n) %s board.\n", RIOT_BOARD);
+  printf("This board features a(n) %s MCU.\n", RIOT_MCU);
+  printf("\n\n");
 
-    printf("You are running RIOT on a(n) %s board.\n", RIOT_BOARD);
-    printf("This board features a(n) %s MCU.\n", RIOT_MCU);
+  puts("Welcome to the HaCl* cryptographic library !\n");
 
-    printf("\n\n");
+  printf("\n # Test vector for Chacha20\n");
+  int32_t res = test_chacha();
 
-    puts("Welcome to the HaCl* cryptographic library !\n");
+  printf("\n # Performance for Chacha20\n");
+  res += perf_chacha();
 
-    printf("\n # Test vector for Chacha20\n");
-    int32_t res = test_chacha();
+  printf("\n # END\n");
 
-    /* printf("\n # Performance for Chacha20\n"); */
-    /* res += perf_chacha(); */
-
-    return res;
+  return res;
 }
