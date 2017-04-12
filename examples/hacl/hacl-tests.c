@@ -116,3 +116,38 @@ int32_t perf_curve() {
 
   return exit_success;
 }
+
+int32_t test_poly()
+{
+  uint32_t macsize = (uint32_t )16;
+  uint8_t mac[macsize];
+  memset(mac, 0, macsize * sizeof mac[0]);
+  Poly1305_64_crypto_onetimeauth(mac, plaintext, 34, poly_key);
+  TestLib_compare_and_print("HACL Poly1305", poly_expected, mac, macsize);
+  return exit_success;
+}
+
+int32_t perf_poly() {
+  uint32_t len = POLY_PLAINLEN * sizeof(char);
+  uint8_t* plain = malloc(len);
+  int fd = open("/dev/urandom", O_RDONLY);
+  uint64_t res = read(fd, plain, len);
+  uint8_t* macs = malloc(ROUNDS * POLY_MACSIZE * sizeof(char));
+  if (res != len) {
+    printf("Error on reading, got %llu bytes\n", res);
+    return 1;
+  }
+
+  printf("Before timing\n");
+
+  clock_t t1,t2;
+  t1 = clock();
+  for (int i = 0; i < ROUNDS; i++){
+    printf("Round %d\n", i);
+    Poly1305_64_crypto_onetimeauth(macs + POLY_MACSIZE * i, plain, len, poly_key);
+  }
+  t2 = clock();
+  print_results("HACL Poly1305 speed", (double)t2-t1, ROUNDS, POLY_PLAINLEN);
+
+  return exit_success;
+}

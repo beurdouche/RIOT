@@ -41,6 +41,12 @@ int main(void)
   printf("\n # Performance for Curve25519\n");
   res += perf_curve();
 
+  printf("\n # Test vector for Poly1305\n");
+  res += test_poly();
+
+  /* printf("\n # Performance for Poly1305\n"); */
+  /* res += perf_poly(); */
+
   printf("\n # END\n");
 
   return res;
