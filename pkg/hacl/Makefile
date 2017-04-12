@@ -1,6 +1,6 @@
 PKG_NAME=hacl
 PKG_URL=https://github.com/mitls/hacl-star.git
-PKG_VERSION=f23cd173da9adb3a26fd282fef6b768d18169bba
+PKG_VERSION=4fcf52cbc3fcc9cf7b269223c9d0ae91141b0f2c
 PKG_LICENSE=Apache-2.0
 
 .PHONY: all
