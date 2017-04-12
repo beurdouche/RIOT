@@ -35,6 +35,12 @@ int main(void)
   printf("\n # Performance for Chacha20\n");
   res += perf_chacha();
 
+  printf("\n # Test vector for Curve25519\n");
+  res += test_curve();
+
+  printf("\n # Performance for Curve25519\n");
+  res += perf_curve();
+
   printf("\n # END\n");
 
   return res;
