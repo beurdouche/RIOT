@@ -30,8 +30,8 @@ void print_results(char *txt, double t1, unsigned long long d1, int rounds, int 
   printf("User time for %d times %d bytes: %f (%fus/byte)\n", rounds, plainlen, t1/CLOCKS_PER_SEC, (double)t1*1000000/CLOCKS_PER_SEC/plainlen/rounds);
 }
 
-#define PLAINLEN (16*1024)
-#define ROUNDS 1000
+#define PLAINLEN 256
+#define ROUNDS 1
 #define MACSIZE 32
 
 
@@ -393,8 +393,15 @@ int main(void)
     printf("You are running RIOT on a(n) %s board.\n", RIOT_BOARD);
     printf("This board features a(n) %s MCU.\n", RIOT_MCU);
 
-    puts("Welcome to the HaCl* cryptographic library !");
+    printf("\n\n");
+
+    puts("Welcome to the HaCl* cryptographic library !\n");
+
+    printf("\n # Test vector for Chacha20\n");
     int32_t res = test_chacha();
+
+    /* printf("\n # Performance for Chacha20\n"); */
+    /* res += perf_chacha(); */
 
     return res;
 }
