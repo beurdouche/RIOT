@@ -24,7 +24,7 @@ RIOTBASE ?= $(CURDIR)/../..
 # development process:
 
 # Change this to 0 show compiler invocation lines by default:
-QUIET ?= 1
+QUIET ?= 0
 
 USEPKG += hacl
 
@@ -36,9 +36,10 @@ USEMODULE += ps
 include $(RIOTBASE)/Makefile.include
 
 CFLAGS += -DDEVELHELP -Wno-unused-parameter -Wno-unused-variable
+CFLAGS += -Ofast -fwrapv -fomit-frame-pointer -g
 
 ifneq (,$(filter iotlab-m3,$(BOARD)))
 	CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-error=strict-prototypes -Wno-error=old-style-definition
 else
-	CFLAGS += -Wno-typedef-redefinition -Wno-shift-op-parentheses -Wno-sign-compare
+	CFLAGS += -funroll-all-loops -Wno-typedef-redefinition -Wno-shift-op-parentheses -Wno-sign-compare -Wno-ignored-optimization-argument
 endif
