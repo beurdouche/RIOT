@@ -19,7 +19,17 @@
  */
 
 #include <stdio.h>
+
+#include "kremlib.h"
+#include "testlib.h"
+#include "Chacha20.h"
+#include "Curve25519.h"
+#include "Poly1305_64.h"
+
+#include "tweetnacl.h"
+
 #include "hacl-tests.h"
+
 
 uint8_t
 chacha_plaintext[114] =
@@ -642,8 +652,8 @@ int32_t test_chacha(void)
   Chacha20_chacha20(ciphertext, chacha_plaintext, len, chacha_key, chacha_nonce, counter);
   TestLib_compare_and_print("HACL Chacha20", chacha_expected, ciphertext, len);
 
-  /* crypto_stream_chacha20_ietf_xor_ic(ciphertext,plaintext, len, nonce, 1, key); */
-  /* TestLib_compare_and_print("Sodium Chacha20", expected, ciphertext, len); */
+  /* crypto_stream_chacha20_ietf_xor_ic(ciphertext, chacha_plaintext, len, chacha_nonce, 1, chacha_key); */
+  /* TestLib_compare_and_print("TweetNaCl Chacha20", chacha_expected, ciphertext, len); */
 
   return exit_success;
 }
@@ -663,14 +673,25 @@ int32_t perf_chacha(void) {
   uint32_t counter = (uint32_t )1;
   clock_t t1,t2;
 
+  // HaCl
   t1 = clock();
   for (int i = 0; i < ROUNDS; i++){
-    Chacha20_chacha20(plain,plain, len, chacha_key, chacha_nonce, counter);
+    Chacha20_chacha20(plain, plain, len, chacha_key, chacha_nonce, counter);
     plain[0] = cipher[0];
   }
   t2 = clock();
-
   print_results("HACL ChaCha20 speed", (double)t2-t1, ROUNDS, CHACHA_PLAINLEN);
+
+  /* // TweetNaCl */
+  /* t1 = clock(); */
+  /* for (int i = 0; i < ROUNDS; i++){ */
+  /*   crypto_stream_chacha20_ietf_xor_ic(plain, plain, len, chacha_key, chacha_nonce, counter); */
+  /*   plain[0] = cipher[0]; */
+  /* } */
+  /* t2 = clock(); */
+
+  /* print_results("TweetNaCl ChaCha20 speed", (double)t2-t1, ROUNDS, CHACHA_PLAINLEN); */
+
 
   return exit_success;
 }
@@ -684,8 +705,8 @@ int32_t test_curve(void)
   Curve25519_crypto_scalarmult(result, curve25519_scalar1, curve25519_input1);
   TestLib_compare_and_print("HACL Curve25519", curve25519_expected1, result, keysize);
 
-  Curve25519_crypto_scalarmult(result, curve25519_scalar2, curve25519_input2);
-  TestLib_compare_and_print("HACL Curve25519", curve25519_expected2, result, keysize);
+  tweet_crypto_scalarmult(result, curve25519_scalar2, curve25519_input2);
+  TestLib_compare_and_print("TweetNaCl Curve25519", curve25519_expected2, result, keysize);
 
   return exit_success;
 }
@@ -712,12 +733,22 @@ int32_t perf_curve(void) {
   }
 
   clock_t t1,t2;
+
+  // HaCl
   t1 = clock();
   for (int i = 0; i < ROUNDS; i++){
     Curve25519_crypto_scalarmult(mul + CURVE25519_KEYSIZE * i, sk + CURVE25519_KEYSIZE * i, pk + CURVE25519_KEYSIZE * i);
   }
   t2 = clock();
   print_results("HACL Curve25519 speed", (double)(t2-t1)/ROUNDS, 1, 1);
+
+  // TweetNaCl
+  t1 = clock();
+  for (int i = 0; i < ROUNDS; i++){
+    tweet_crypto_scalarmult(mul + CURVE25519_KEYSIZE * i, sk + CURVE25519_KEYSIZE * i, pk + CURVE25519_KEYSIZE * i);
+  }
+  t2 = clock();
+  print_results("TweetNaCl Curve25519 speed", (double)(t2-t1)/ROUNDS, 1, 1);
 
   return exit_success;
 }
@@ -727,8 +758,13 @@ int32_t test_poly(void)
   uint32_t macsize = (uint32_t )16;
   uint8_t mac[macsize];
   memset(mac, 0, macsize * sizeof mac[0]);
+
   Poly1305_64_crypto_onetimeauth(mac, plaintext, 34, poly_key);
   TestLib_compare_and_print("HACL Poly1305", poly_expected, mac, macsize);
+
+  tweet_crypto_onetimeauth(mac, plaintext, 34, poly_key);
+  TestLib_compare_and_print("TweetNaCl Poly1305", poly_expected, mac, macsize);
+
   return exit_success;
 }
 
@@ -743,9 +779,9 @@ int32_t perf_poly(void) {
     return 1;
   }
 
-  printf("Before timing\n");
-
   clock_t t1,t2;
+
+  // HaCl
   t1 = clock();
   for (int i = 0; i < ROUNDS; i++){
     printf("Round %d\n", i);
@@ -753,6 +789,15 @@ int32_t perf_poly(void) {
   }
   t2 = clock();
   print_results("HACL Poly1305 speed", (double)t2-t1, ROUNDS, POLY_PLAINLEN);
+
+  // TweetNaCl
+  t1 = clock();
+  for (int i = 0; i < ROUNDS; i++){
+    printf("Round %d\n", i);
+    tweet_crypto_onetimeauth(macs + POLY_MACSIZE * i, plain, len, poly_key);
+  }
+  t2 = clock();
+  print_results("TweetNaCl Poly1305 speed", (double)t2-t1, ROUNDS, POLY_PLAINLEN);
 
   return exit_success;
 }

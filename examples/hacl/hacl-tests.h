@@ -28,6 +28,8 @@
 #include "Curve25519.h"
 #include "Poly1305_64.h"
 
+#include "tweetnacl.h"
+
 
 void print_results(char *txt, double t1, int rounds, int plainlen);
 

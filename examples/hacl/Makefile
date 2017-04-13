@@ -40,5 +40,5 @@ CFLAGS += -DDEVELHELP -Wno-unused-parameter -Wno-unused-variable
 ifneq (,$(filter iotlab-m3,$(BOARD)))
 	CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-error=strict-prototypes -Wno-error=old-style-definition
 else
-	CFLAGS += -Wno-typedef-redefinition -Wno-shift-op-parentheses
+	CFLAGS += -Wno-typedef-redefinition -Wno-shift-op-parentheses -Wno-sign-compare
 endif

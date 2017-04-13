@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include "hacl-tests.h"
+#include "tweetnacl.h"
 
 int main(void)
 {
