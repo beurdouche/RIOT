@@ -1,0 +1,24 @@
+/**
+ * @defgroup pkg_hacl HACL* High Assurance Cryptographic Library
+ * @ingroup  pkg
+ * @ingroup  sys
+ * @brief    Support for HACL* (High Assurance Cryptographic Library)
+ *
+ * # HACL* RIOT package
+ *
+ * ## Usage
+ *
+ * Just add it as a package in your application:
+ *
+ * ```makefile
+ * USEPKG += hacl
+ * ```
+ *
+ * And don't forget to include the header:
+ *
+ * ```c
+ * #include <hacl.h>
+ * ```
+ *
+ * @see     https://github.com/mitls/hacl-c
+ */
