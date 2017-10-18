@@ -12,6 +12,9 @@ RIOTBASE ?= $(CURDIR)/../..
 # development process:
 CFLAGS += -DDEVELHELP
 
+# NOTE: Add the package for HACL*
+USEPKG += hacl
+
 # Change this to 0 show compiler invocation lines by default:
 QUIET ?= 1
 
