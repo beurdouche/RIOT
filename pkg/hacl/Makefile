@@ -6,7 +6,6 @@ PKG_LICENSE=MIT
 .PHONY: all
 
 all: git-download
-	@cp $(RIOTBASE)/pkg/hacl/src/* $(PKG_BUILDDIR)
 	"$(MAKE)" -C $(PKG_BUILDDIR)
 
 include $(RIOTBASE)/pkg/pkg.mk
