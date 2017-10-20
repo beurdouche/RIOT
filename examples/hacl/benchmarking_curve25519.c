@@ -1,10 +1,8 @@
-#include "benchmarking_salsa20.h"
+#include "benchmarking_curve25519.h"
 
-#define SALSA20_INPUT_LEN 14
-#define SALSA20_KEYSIZE 32
-#define SALSA20_NONCESIZE 12
+#define CURVE25519_POINTSIZE 32
 
-int benchmarking_salsa20(void) {
+int benchmarking_curve25519(void) {
 
   /* Initialize */
   xtimer_ticks64_t start_ticks0,start_ticks1;
@@ -17,23 +15,18 @@ int benchmarking_salsa20(void) {
   // Preparing
   //
 
-  unsigned char *salsa20_ciphertext = malloc(SALSA20_INPUT_LEN * sizeof(char));
-  if (salsa20_ciphertext == NULL) {
+  unsigned char *curve25519_public = malloc(CURVE25519_POINTSIZE * sizeof(char));
+  if (curve25519_public == NULL) {
       printf("\nCould not allocate enough memory.\n\n");
       return 0;
   }
-  unsigned char *salsa20_plaintext = malloc(SALSA20_INPUT_LEN * sizeof(char));
-  if (salsa20_plaintext == NULL) {
+  unsigned char *curve25519_secret = malloc(CURVE25519_POINTSIZE * sizeof(char));
+  if (curve25519_public == NULL) {
       printf("\nCould not allocate enough memory.\n\n");
       return 0;
   }
-  unsigned char *salsa20_nonce = malloc(SALSA20_NONCESIZE * sizeof(char));
-  if (salsa20_nonce == NULL) {
-      printf("\nCould not allocate enough memory.\n\n");
-      return 0;
-  }
-  unsigned char *salsa20_key = malloc(SALSA20_KEYSIZE * sizeof(char));
-  if (salsa20_key == NULL) {
+  unsigned char *curve25519_basepoint = malloc(CURVE25519_POINTSIZE * sizeof(char));
+  if (curve25519_basepoint == NULL) {
       printf("\nCould not allocate enough memory.\n\n");
       return 0;
   }
@@ -46,7 +39,7 @@ int benchmarking_salsa20(void) {
 
   start_ticks0 = xtimer_now64();
   for (int i = 0; i < ROUNDS; i++){
-    Salsa20_salsa20(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_key,salsa20_nonce,1);
+    Curve25519_crypto_scalarmult(curve25519_public,curve25519_secret,curve25519_basepoint);
   }
   end_ticks0 = xtimer_now64();
   ticks_dif0 = (uint64_t) (end_ticks0.ticks64 - start_ticks0.ticks64);
@@ -62,7 +55,7 @@ int benchmarking_salsa20(void) {
 
   start_ticks1 = xtimer_now64();
   for (int i = 0; i < ROUNDS; i++){
-    crypto_stream_salsa20_tweet_xor(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_nonce,salsa20_key);
+    crypto_scalarmult(curve25519_public,curve25519_secret,curve25519_basepoint);
   }
   end_ticks1 = xtimer_now64();
   ticks_dif1 = (uint64_t) (end_ticks1.ticks64 - start_ticks1.ticks64);
@@ -73,8 +66,8 @@ int benchmarking_salsa20(void) {
   //
   // Display results
   //
-  printf("HACL*     Salsa20: %d operations in %u ticks (%s operations per tick).\n", ROUNDS, (unsigned int) ticks_dif0, ticks_buf0);
-  printf("TweetNaCl Salsa20: %d operations in %u ticks (%s operations per tick).\n", ROUNDS, (unsigned int) ticks_dif1, ticks_buf1);
+  printf("HACL*     Curve25519: %d operations in %u ticks (%s operations per tick).\n", ROUNDS, (unsigned int) ticks_dif0, ticks_buf0);
+  printf("TweetNaCl Curve25519: %d operations in %u ticks (%s operations per tick).\n", ROUNDS, (unsigned int) ticks_dif1, ticks_buf1);
 
   return 0;
 }

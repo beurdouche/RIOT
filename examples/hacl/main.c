@@ -24,9 +24,17 @@
  */
 
 #include "benchmarking_utils.h"
+#include "benchmarking_curve25519.h"
 #include "benchmarking_salsa20.h"
 
 int main(void){
+
+  /* Waiting for the user to log in the device :) */
+  xtimer_sleep(10);
+
+  /* Running the experiments */
   benchmarking_salsa20();
+  benchmarking_curve25519();
+
   return 0;
 }
