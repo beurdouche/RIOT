@@ -49,7 +49,7 @@ int benchmarking_salsa20(void) {
 
   start_ticks0 = xtimer_now64();
   for (int i = 0; i < ROUNDS; i++){
-    crypto_stream_salsa20_tweet_xor(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_nonce,salsa20_key);
+    Salsa20_salsa20(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_key,salsa20_nonce,1);
   }
   end_ticks0 = xtimer_now64();
   ticks_dif0 = (uint64_t) (end_ticks0.ticks64 - start_ticks0.ticks64);
