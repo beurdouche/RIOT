@@ -1,4 +1,4 @@
-# name of your application
+ # name of your application
 APPLICATION = hacl
 
 # If no BOARD is found in the environment, use this default:
@@ -10,7 +10,7 @@ RIOTBASE ?= $(CURDIR)/../..
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the
 # development process:
-CFLAGS += -DDEVELHELP
+CFLAGS += -DDEVELHELP -DKRML_NOUINT128 -Wno-error=unused-function
 
 USEMODULE += xtimer
 USEMODULE += random
