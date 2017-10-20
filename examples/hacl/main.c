@@ -163,8 +163,12 @@ void get_floatstring(char* buf, size_t buf_size, int64_t dividend, int64_t divis
     }
 }
 
-#define KEYSIZE 32
-#define ROUNDS 10
+#define ROUNDS 10000
+
+#define SALSA20_INPUT_LEN 14
+#define SALSA20_KEYSIZE 32
+#define SALSA20_NONCESIZE 12
+
 
 int main(void) {
 
@@ -181,21 +185,23 @@ int main(void) {
   /* Waiting for the user to log in the device :) */
   xtimer_sleep(10);
 
-  /* Generate inputs */
-  // random_init(0x33799f);
-
-  unsigned char *pk = malloc(KEYSIZE * ROUNDS * sizeof(char));
-  if (pk == NULL) {
+  unsigned char *salsa20_ciphertext = malloc(SALSA20_INPUT_LEN * sizeof(char));
+  if (salsa20_ciphertext == NULL) {
       printf("\nCould not allocate enough memory.\n\n");
       return 0;
   }
-  unsigned char *sk = malloc(KEYSIZE * ROUNDS * sizeof(char));
-  if (sk == NULL) {
+  unsigned char *salsa20_plaintext = malloc(SALSA20_INPUT_LEN * sizeof(char));
+  if (salsa20_plaintext == NULL) {
       printf("\nCould not allocate enough memory.\n\n");
       return 0;
   }
-  unsigned char *mul = malloc(KEYSIZE * ROUNDS * sizeof(char));
-  if (mul == NULL) {
+  unsigned char *salsa20_nonce = malloc(SALSA20_NONCESIZE * sizeof(char));
+  if (salsa20_nonce == NULL) {
+      printf("\nCould not allocate enough memory.\n\n");
+      return 0;
+  }
+  unsigned char *salsa20_key = malloc(SALSA20_KEYSIZE * sizeof(char));
+  if (salsa20_key == NULL) {
       printf("\nCould not allocate enough memory.\n\n");
       return 0;
   }
@@ -208,19 +214,19 @@ int main(void) {
 
   start_ticks = xtimer_now64();
   for (int i = 0; i < ROUNDS; i++){
-    crypto_scalarmult(mul + KEYSIZE * i, sk + KEYSIZE * i, pk + KEYSIZE * i);
+    crypto_stream_salsa20_tweet_xor(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_nonce,salsa20_key);
   }
   end_ticks = xtimer_now64();
   ticks_dif = (uint64_t) (end_ticks.ticks64 - start_ticks.ticks64);
   get_floatstring(ticks_buf, 32, ROUNDS, ticks_dif, 8, 5, 1);
 
-  printf("Starting benchmark for TweetNaCl\n");
+  printf("Stopping benchmark for TweetNaCl\n");
 
   //
   // Display results
   //
 
-  printf("TweetNaCl Curve25519: %d operations in %u ticks (%s operations per tick).\n\n", ROUNDS, (unsigned int) ticks_dif, ticks_buf);
+  printf("TweetNaCl Salsa20: %d operations in %u ticks (%s operations per tick).\n\n", ROUNDS, (unsigned int) ticks_dif, ticks_buf);
 
   return 0;
 }
