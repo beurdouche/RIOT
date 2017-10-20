@@ -33,8 +33,10 @@
 #include "xtimer.h"
 #include "timex.h"
 #include "random.h"
+
+#include "Salsa20.h"
 #include "tweetnacl.h"
-//#include "Curve25519.h"
+
 
 /*
  * Function to generate a string with the result of a division without using floating point arithmetic.
@@ -170,13 +172,14 @@ void get_floatstring(char* buf, size_t buf_size, int64_t dividend, int64_t divis
 #define SALSA20_NONCESIZE 12
 
 
-int main(void) {
+int benchmarking_salsa20(void) {
 
   /* Initialize */
-  xtimer_ticks64_t start_ticks;
-  xtimer_ticks64_t end_ticks;
-  uint64_t ticks_dif;
-  char ticks_buf[32];
+  xtimer_ticks64_t start_ticks0,start_ticks1;
+  xtimer_ticks64_t end_ticks0,end_ticks1;
+  uint64_t ticks_dif0,ticks_dif1;
+  char ticks_buf0[32];
+  char ticks_buf1[32];
 
   //
   // Preparing
@@ -207,26 +210,47 @@ int main(void) {
   }
 
   //
+  // Benchmark for HACL*
+  //
+
+  printf("Starting benchmark for HACL*\n");
+
+  start_ticks0 = xtimer_now64();
+  for (int i = 0; i < ROUNDS; i++){
+    crypto_stream_salsa20_tweet_xor(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_nonce,salsa20_key);
+  }
+  end_ticks0 = xtimer_now64();
+  ticks_dif0 = (uint64_t) (end_ticks0.ticks64 - start_ticks0.ticks64);
+  get_floatstring(ticks_buf0, 32, ROUNDS, ticks_dif0, 8, 5, 1);
+
+  printf("Stopping benchmark for HACL*\n");
+
+  //
   // Benchmark for TweetNaCl
   //
 
   printf("Starting benchmark for TweetNaCl\n");
 
-  start_ticks = xtimer_now64();
+  start_ticks1 = xtimer_now64();
   for (int i = 0; i < ROUNDS; i++){
     crypto_stream_salsa20_tweet_xor(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_nonce,salsa20_key);
   }
-  end_ticks = xtimer_now64();
-  ticks_dif = (uint64_t) (end_ticks.ticks64 - start_ticks.ticks64);
-  get_floatstring(ticks_buf, 32, ROUNDS, ticks_dif, 8, 5, 1);
+  end_ticks1 = xtimer_now64();
+  ticks_dif1 = (uint64_t) (end_ticks1.ticks64 - start_ticks1.ticks64);
+  get_floatstring(ticks_buf1, 32, ROUNDS, ticks_dif1, 8, 5, 1);
 
   printf("Stopping benchmark for TweetNaCl\n");
 
   //
   // Display results
   //
+  printf("HACL*     Salsa20: %d operations in %u ticks (%s operations per tick).\n", ROUNDS, (unsigned int) ticks_dif0, ticks_buf0);
+  printf("TweetNaCl Salsa20: %d operations in %u ticks (%s operations per tick).\n", ROUNDS, (unsigned int) ticks_dif1, ticks_buf1);
 
-  printf("TweetNaCl Salsa20: %d operations in %u ticks (%s operations per tick).\n\n", ROUNDS, (unsigned int) ticks_dif, ticks_buf);
+  return 0;
+}
 
+int main(void){
+  benchmarking_salsa20();
   return 0;
 }
