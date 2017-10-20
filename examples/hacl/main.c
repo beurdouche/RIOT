@@ -33,7 +33,8 @@
 #include "xtimer.h"
 #include "timex.h"
 #include "random.h"
-#include "Curve25519.h"
+#include "tweetnacl.h"
+//#include "Curve25519.h"
 
 /*
  * Function to generate a string with the result of a division without using floating point arithmetic.
@@ -163,7 +164,7 @@ void get_floatstring(char* buf, size_t buf_size, int64_t dividend, int64_t divis
 }
 
 #define KEYSIZE 32
-#define ROUNDS 1000
+#define ROUNDS 10
 
 int main(void) {
 
@@ -173,8 +174,15 @@ int main(void) {
   uint64_t ticks_dif;
   char ticks_buf[32];
 
+  //
+  // Preparing
+  //
+
+  /* Waiting for the user to log in the device :) */
+  xtimer_sleep(10);
+
   /* Generate inputs */
-  random_init(0x33799f);
+  // random_init(0x33799f);
 
   unsigned char *pk = malloc(KEYSIZE * ROUNDS * sizeof(char));
   if (pk == NULL) {
@@ -193,18 +201,26 @@ int main(void) {
   }
 
   //
-  // Benchmark for HACL*
+  // Benchmark for TweetNaCl
   //
+
+  printf("Starting benchmark for TweetNaCl\n");
 
   start_ticks = xtimer_now64();
   for (int i = 0; i < ROUNDS; i++){
-    Curve25519_crypto_scalarmult(mul + KEYSIZE * i, sk + KEYSIZE * i, pk + KEYSIZE * i);
+    crypto_scalarmult(mul + KEYSIZE * i, sk + KEYSIZE * i, pk + KEYSIZE * i);
   }
   end_ticks = xtimer_now64();
   ticks_dif = (uint64_t) (end_ticks.ticks64 - start_ticks.ticks64);
   get_floatstring(ticks_buf, 32, ROUNDS, ticks_dif, 8, 5, 1);
-  printf("HACL* Curve25519: %d operations in %u ticks (%s operations per tick).\n\n", ROUNDS, (unsigned int) ticks_dif, ticks_buf);
+
+  printf("Starting benchmark for TweetNaCl\n");
+
+  //
+  // Display results
+  //
+
+  printf("TweetNaCl Curve25519: %d operations in %u ticks (%s operations per tick).\n\n", ROUNDS, (unsigned int) ticks_dif, ticks_buf);
 
   return 0;
 }
-
