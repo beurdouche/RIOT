@@ -9,7 +9,7 @@
 #include "Curve25519.h"
 #include "tweetnacl.h"
 
-#define ROUNDS 10000
+#define ROUNDS 10
 
 int benchmarking_curve25519(void);
 
