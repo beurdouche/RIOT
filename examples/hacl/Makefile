@@ -10,7 +10,7 @@ RIOTBASE ?= $(CURDIR)/../..
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the
 # development process:
-CFLAGS += -DDEVELHELP -DKRML_NOUINT128 -Wno-unused-function -Wno-error=unused-function -Wno-parentheses -Wno-error=parentheses -Wno-unused-variable -Wno-error=unused-variable -Wno-discarded-qualifiers -Wno-error=discarded-qualifiers
+CFLAGS += -DDEVELHELP -DKRML_NOUINT128
 
 USEMODULE += xtimer
 USEMODULE += random
@@ -19,6 +19,6 @@ USEPKG += hacl
 USEPKG += tweetnacl
 
 # Change this to 0 show compiler invocation lines by default:
-QUIET ?= 1
+QUIET ?= 0
 
 include $(RIOTBASE)/Makefile.include
