@@ -6,10 +6,10 @@
 #include "random.h"
 
 #include "benchmarking_utils.h"
-#include "Salsa20.h"
+#include "Hacl_Salsa20.h"
 #include "tweetnacl.h"
 
-#define ROUNDS 10000
+#define ROUNDS_CHACHA20 10000
 
 int benchmarking_salsa20(void);
 
