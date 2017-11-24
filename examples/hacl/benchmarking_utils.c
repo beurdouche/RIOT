@@ -1,3 +1,5 @@
+/* Based on the original code from: https://github.com/adrianghc/RIOT/tree/master/examples */
+
 #include "benchmarking_utils.h"
 
 /*

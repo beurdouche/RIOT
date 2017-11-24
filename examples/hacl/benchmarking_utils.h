@@ -1,3 +1,5 @@
+/* Based on the original code from: https://github.com/adrianghc/RIOT/tree/master/examples */
+
 #ifndef __Benchmarking_Utils_H
 #define __Benchmarking_Utils_H
 
