@@ -18,8 +18,10 @@ import testrunner
 US_PER_SEC = 1000000
 EXTERNAL_JITTER = 0.15
 
+
 class InvalidTimeout(Exception):
     pass
+
 
 def testfunc(child):
     try:
@@ -35,12 +37,12 @@ def testfunc(child):
         child.expect_exact("DONE")
         testtime = (time.time() - start_test) * US_PER_SEC
         exp = sum(i * 500000 for i in range(5)) + \
-              sum(i * US_PER_SEC for i in range(5))
+            sum(i * US_PER_SEC for i in range(5))
         lower_bound = exp - (exp * EXTERNAL_JITTER)
         upper_bound = exp + (exp * EXTERNAL_JITTER)
         if not (lower_bound < testtime < upper_bound):
             raise InvalidTimeout("Host timer measured %d us (client measured %d us)" % \
-                                 (testtime, exp));
+                                 (testtime, exp))
     except InvalidTimeout as e:
         print(e)
         sys.exit(1)

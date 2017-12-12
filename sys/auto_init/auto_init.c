@@ -40,10 +40,6 @@
 #include "net/gnrc/ipv6.h"
 #endif
 
-#ifdef MODULE_GNRC_IPV6_NETIF
-#include "net/gnrc/ipv6/netif.h"
-#endif
-
 #ifdef MODULE_L2_PING
 #include "l2_ping.h"
 #endif
@@ -234,11 +230,12 @@ void auto_init(void)
     auto_init_w5100();
 #endif
 
-#endif /* MODULE_AUTO_INIT_GNRC_NETIF */
-
-#ifdef MODULE_GNRC_IPV6_NETIF
-    gnrc_ipv6_netif_init_by_dev();
+#ifdef MODULE_SX127X
+    extern void auto_init_sx127x(void);
+    auto_init_sx127x();
 #endif
+
+#endif /* MODULE_AUTO_INIT_GNRC_NETIF */
 
 #ifdef MODULE_GNRC_UHCPC
     extern void auto_init_gnrc_uhcpc(void);
@@ -288,6 +285,10 @@ void auto_init(void)
 #ifdef MODULE_MPL3115A2
     extern void auto_init_mpl3115a2(void);
     auto_init_mpl3115a2();
+#endif
+#ifdef MODULE_MPU9150
+extern void auto_init_mpu9150(void);
+auto_init_mpu9150();
 #endif
 #ifdef MODULE_GROVE_LEDBAR
     extern void auto_init_grove_ledbar(void);

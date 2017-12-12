@@ -20,6 +20,7 @@
  * @}
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,7 +30,6 @@
 #include "shell.h"
 #include "shell_commands.h"
 
-#include "net/gnrc/netdev.h"
 #include "net/netdev.h"
 #include "net/lora.h"
 
@@ -241,6 +241,7 @@ int listen_cmd(int argc, char **argv)
 
     /* Switch to continuous listen mode */
     netdev->driver->set(netdev, NETOPT_SINGLE_RECEIVE, false, sizeof(uint8_t));
+    netdev->driver->set(netdev, NETOPT_RX_TIMEOUT, 0, sizeof(uint8_t));
 
     /* Switch to RX state */
     uint8_t state = NETOPT_STATE_RX;
