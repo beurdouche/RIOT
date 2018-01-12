@@ -5,9 +5,9 @@
 int benchmarking_curve25519(void) {
 
     /* Initialize */
-    xtimer_ticks64_t start_ticks0,start_ticks1;
-    xtimer_ticks64_t end_ticks0,end_ticks1;
-    uint64_t ticks_dif0,ticks_dif1;
+    xtimer_ticks64_t start_ticks0, start_ticks1;
+    xtimer_ticks64_t end_ticks0, end_ticks1;
+    uint64_t ticks_dif0, ticks_dif1;
     char ticks_buf0[32];
     char ticks_buf1[32];
 
@@ -39,7 +39,7 @@ int benchmarking_curve25519(void) {
 
     start_ticks0 = xtimer_now64();
     for (int i = 0; i < ROUNDS_CURVE25519; i++) {
-        Hacl_Curve25519_crypto_scalarmult(curve25519_public,curve25519_secret,curve25519_basepoint);
+        Hacl_Curve25519_crypto_scalarmult(curve25519_public, curve25519_secret, curve25519_basepoint);
     }
     end_ticks0 = xtimer_now64();
     ticks_dif0 = (uint64_t) (end_ticks0.ticks64 - start_ticks0.ticks64);
@@ -55,7 +55,7 @@ int benchmarking_curve25519(void) {
 
     start_ticks1 = xtimer_now64();
     for (int i = 0; i < ROUNDS_CURVE25519; i++) {
-        crypto_scalarmult(curve25519_public,curve25519_secret,curve25519_basepoint);
+        crypto_scalarmult(curve25519_public, curve25519_secret, curve25519_basepoint);
     }
     end_ticks1 = xtimer_now64();
     ticks_dif1 = (uint64_t) (end_ticks1.ticks64 - start_ticks1.ticks64);

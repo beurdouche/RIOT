@@ -7,9 +7,9 @@
 int benchmarking_salsa20(void) {
 
     /* Initialize */
-    xtimer_ticks64_t start_ticks0,start_ticks1;
-    xtimer_ticks64_t end_ticks0,end_ticks1;
-    uint64_t ticks_dif0,ticks_dif1;
+    xtimer_ticks64_t start_ticks0, start_ticks1;
+    xtimer_ticks64_t end_ticks0, end_ticks1;
+    uint64_t ticks_dif0, ticks_dif1;
     char ticks_buf0[32];
     char ticks_buf1[32];
 
@@ -46,7 +46,7 @@ int benchmarking_salsa20(void) {
 
     start_ticks0 = xtimer_now64();
     for (int i = 0; i < ROUNDS_CHACHA20; i++) {
-        Hacl_Salsa20_salsa20(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_key,salsa20_nonce,1);
+        Hacl_Salsa20_salsa20(salsa20_ciphertext, salsa20_plaintext, SALSA20_INPUT_LEN, salsa20_key, salsa20_nonce, 1);
     }
     end_ticks0 = xtimer_now64();
     ticks_dif0 = (uint64_t) (end_ticks0.ticks64 - start_ticks0.ticks64);
@@ -62,7 +62,7 @@ int benchmarking_salsa20(void) {
 
     start_ticks1 = xtimer_now64();
     for (int i = 0; i < ROUNDS_CHACHA20; i++) {
-        crypto_stream_salsa20_tweet_xor(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_nonce,salsa20_key);
+        crypto_stream_salsa20_tweet_xor(salsa20_ciphertext, salsa20_plaintext, SALSA20_INPUT_LEN, salsa20_nonce, salsa20_key);
     }
     end_ticks1 = xtimer_now64();
     ticks_dif1 = (uint64_t) (end_ticks1.ticks64 - start_ticks1.ticks64);
