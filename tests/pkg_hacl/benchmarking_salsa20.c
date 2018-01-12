@@ -45,7 +45,7 @@ int benchmarking_salsa20(void) {
   printf("Starting benchmark for HACL*\n");
 
   start_ticks0 = xtimer_now64();
-  for (int i = 0; i < ROUNDS_CHACHA20; i++){
+  for (int i = 0; i < ROUNDS_CHACHA20; i++) {
     Hacl_Salsa20_salsa20(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_key,salsa20_nonce,1);
   }
   end_ticks0 = xtimer_now64();
@@ -61,7 +61,7 @@ int benchmarking_salsa20(void) {
   printf("Starting benchmark for TweetNaCl\n");
 
   start_ticks1 = xtimer_now64();
-  for (int i = 0; i < ROUNDS_CHACHA20; i++){
+  for (int i = 0; i < ROUNDS_CHACHA20; i++) {
     crypto_stream_salsa20_tweet_xor(salsa20_ciphertext,salsa20_plaintext,SALSA20_INPUT_LEN,salsa20_nonce,salsa20_key);
   }
   end_ticks1 = xtimer_now64();

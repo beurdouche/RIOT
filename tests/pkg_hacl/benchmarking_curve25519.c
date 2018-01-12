@@ -38,7 +38,7 @@ int benchmarking_curve25519(void) {
   printf("Starting benchmark for HACL*\n");
 
   start_ticks0 = xtimer_now64();
-  for (int i = 0; i < ROUNDS_CURVE25519; i++){
+  for (int i = 0; i < ROUNDS_CURVE25519; i++) {
     Hacl_Curve25519_crypto_scalarmult(curve25519_public,curve25519_secret,curve25519_basepoint);
   }
   end_ticks0 = xtimer_now64();
@@ -54,7 +54,7 @@ int benchmarking_curve25519(void) {
   printf("Starting benchmark for TweetNaCl\n");
 
   start_ticks1 = xtimer_now64();
-  for (int i = 0; i < ROUNDS_CURVE25519; i++){
+  for (int i = 0; i < ROUNDS_CURVE25519; i++) {
     crypto_scalarmult(curve25519_public,curve25519_secret,curve25519_basepoint);
   }
   end_ticks1 = xtimer_now64();
