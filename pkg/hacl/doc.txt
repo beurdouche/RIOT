@@ -1,7 +1,7 @@
 /**
  * @defgroup pkg_hacl HACL* High Assurance Cryptographic Library
  * @ingroup  pkg
- * @ingroup  sys
+ * @ingroup  sys_crypto
  * @brief    Support for HACL* (High Assurance Cryptographic Library)
  *
  * # HACL* RIOT package
