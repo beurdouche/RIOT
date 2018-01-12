@@ -21,7 +21,7 @@ int benchmarking_curve25519(void) {
       return 0;
   }
   unsigned char *curve25519_secret = malloc(CURVE25519_POINTSIZE * sizeof(char));
-  if (curve25519_public == NULL) {
+  if (curve25519_secret == NULL) {
       printf("\nCould not allocate enough memory.\n\n");
       return 0;
   }
