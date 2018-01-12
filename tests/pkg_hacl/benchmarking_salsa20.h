@@ -1,5 +1,5 @@
-#ifndef __Benchmarking_Salsa20_H
-#define __Benchmarking_Salsa20_H
+#ifndef __BENCHMARKING_SALSA20_H
+#define __BENCHMARKING_SALSA20_H
 
 #include "xtimer.h"
 #include "timex.h"

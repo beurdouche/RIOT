@@ -1,5 +1,5 @@
-#ifndef __Benchmarking_Curve25519_H
-#define __Benchmarking_Curve25519_H
+#ifndef __BENCHMARKING_CURVE25519_H
+#define __BENCHMARKING_CURVE25519_H
 
 #include "xtimer.h"
 #include "timex.h"
