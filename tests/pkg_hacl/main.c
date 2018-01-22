@@ -27,10 +27,9 @@ int main(void){
   /* Waiting for the user to log in the device :) */
   xtimer_sleep(10);
 
-  puts("SUCCESS: HACL* compiled!");
   /* Running the experiments */
-  /* benchmarking_salsa20(); */
-  /* benchmarking_curve25519(); */
+  benchmarking_salsa20();
+  benchmarking_curve25519();
 
   return 0;
 }
