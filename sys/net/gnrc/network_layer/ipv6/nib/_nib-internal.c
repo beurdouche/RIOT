@@ -42,9 +42,7 @@ static _nib_dr_entry_t _def_routers[GNRC_IPV6_NIB_DEFAULT_ROUTER_NUMOF];
 static _nib_abr_entry_t _abrs[GNRC_IPV6_NIB_ABR_NUMOF];
 #endif  /* GNRC_IPV6_NIB_CONF_MULTIHOP_P6C */
 
-#if ENABLE_DEBUG
 static char addr_str[IPV6_ADDR_MAX_STR_LEN];
-#endif
 
 mutex_t _nib_mutex = MUTEX_INIT;
 evtimer_msg_t _nib_evtimer;
@@ -291,6 +289,7 @@ void _nib_nc_get(const _nib_onl_entry_t *node, gnrc_ipv6_nib_nc_t *nce)
     if (ipv6_addr_is_link_local(&nce->ipv6)) {
         gnrc_netif_t *netif = gnrc_netif_get_by_pid(_nib_onl_get_if(node));
         assert(netif != NULL);
+        (void)netif;    /* flag-checkers might evaluate just to constants */
         if (gnrc_netif_is_6ln(netif) && !gnrc_netif_is_rtr(netif)) {
             _get_l2addr_from_ipv6(nce->l2addr, &node->ipv6);
             nce->l2addr_len = sizeof(uint64_t);

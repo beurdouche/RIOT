@@ -215,6 +215,11 @@ void auto_init(void)
     auto_init_netdev_tap();
 #endif
 
+#ifdef MODULE_SOCKET_ZEP
+    extern void auto_init_socket_zep(void);
+    auto_init_socket_zep();
+#endif
+
 #ifdef MODULE_NORDIC_SOFTDEVICE_BLE
     extern void gnrc_nordic_ble_6lowpan_init(void);
     gnrc_nordic_ble_6lowpan_init();
@@ -273,6 +278,10 @@ void auto_init(void)
 #ifdef MODULE_LIS3DH
     extern void auto_init_lis3dh(void);
     auto_init_lis3dh();
+#endif
+#ifdef MODULE_LIS3MDL
+extern void auto_init_lis3mdl(void);
+auto_init_lis3mdl();
 #endif
 #ifdef MODULE_MAG3110
     extern void auto_init_mag3110(void);
@@ -353,6 +362,10 @@ auto_init_mpu9150();
 #ifdef MODULE_ADCXX1C
     extern void auto_init_adcxx1c(void);
     auto_init_adcxx1c();
+#endif
+#ifdef MODULE_LIS2DH12
+    extern void auto_init_lis2dh12(void);
+    auto_init_lis2dh12();
 #endif
 
 #endif /* MODULE_AUTO_INIT_SAUL */
