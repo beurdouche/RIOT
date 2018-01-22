@@ -15,21 +15,9 @@ int benchmarking_curve25519(void) {
      * Preparing
      */
 
-    unsigned char *curve25519_public = malloc(CURVE25519_POINTSIZE * sizeof(char));
-    if (curve25519_public == NULL) {
-        printf("\nCould not allocate enough memory.\n\n");
-        return 0;
-    }
-    unsigned char *curve25519_secret = malloc(CURVE25519_POINTSIZE * sizeof(char));
-    if (curve25519_public == NULL) {
-        printf("\nCould not allocate enough memory.\n\n");
-        return 0;
-    }
-    unsigned char *curve25519_basepoint = malloc(CURVE25519_POINTSIZE * sizeof(char));
-    if (curve25519_basepoint == NULL) {
-        printf("\nCould not allocate enough memory.\n\n");
-        return 0;
-    }
+    unsigned char curve25519_public[CURVE25519_POINTSIZE];
+    unsigned char curve25519_secret[CURVE25519_POINTSIZE];
+    unsigned char curve25519_basepoint[CURVE25519_POINTSIZE];
 
     /*
      * Benchmark for HACL*

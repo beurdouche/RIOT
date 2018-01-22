@@ -17,26 +17,10 @@ int benchmarking_salsa20(void) {
      * Preparing
      */
 
-    unsigned char *salsa20_ciphertext = malloc(SALSA20_INPUT_LEN * sizeof(char));
-    if (salsa20_ciphertext == NULL) {
-        printf("\nCould not allocate enough memory.\n\n");
-        return 0;
-    }
-    unsigned char *salsa20_plaintext = malloc(SALSA20_INPUT_LEN * sizeof(char));
-    if (salsa20_plaintext == NULL) {
-        printf("\nCould not allocate enough memory.\n\n");
-        return 0;
-    }
-    unsigned char *salsa20_nonce = malloc(SALSA20_NONCESIZE * sizeof(char));
-    if (salsa20_nonce == NULL) {
-        printf("\nCould not allocate enough memory.\n\n");
-        return 0;
-    }
-    unsigned char *salsa20_key = malloc(SALSA20_KEYSIZE * sizeof(char));
-    if (salsa20_key == NULL) {
-        printf("\nCould not allocate enough memory.\n\n");
-        return 0;
-    }
+    unsigned char salsa20_ciphertext[SALSA20_INPUT_LEN];
+    unsigned char salsa20_plaintext[SALSA20_INPUT_LEN];
+    unsigned char salsa20_nonce[SALSA20_NONCESIZE];
+    unsigned char salsa20_key[SALSA20_KEYSIZE];
 
     /*
      * Benchmark for HACL*
