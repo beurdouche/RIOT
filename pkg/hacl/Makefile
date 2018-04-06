@@ -1,6 +1,6 @@
 PKG_NAME=hacl
 PKG_URL=https://github.com/mitls/hacl-c
-PKG_VERSION=f01fd87972df689db1186f590d8feefed96ed553
+PKG_VERSION=ef7b572b3893238b6c0f40672482a6a221bba7ff
 PKG_LICENSE=MIT
 
 .PHONY: all
