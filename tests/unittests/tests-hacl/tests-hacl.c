@@ -52,7 +52,7 @@ static void tearDown(void)
     /* Finalize */
 }
 
-static void test_tweetnacl_01(void)
+static void test_hacl_01(void)
 {
     int res;
 
