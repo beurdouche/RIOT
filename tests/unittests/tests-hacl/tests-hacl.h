@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Benjamin Beurdouche
+ * Copyright (C) 2018 INRIA
  *
  * This file is subject to the terms and conditions of the GNU Lesser
  * General Public License v2.1. See the file LICENSE in the top level
@@ -27,7 +27,7 @@ extern "C" {
 
 /**
  * @brief MANDATORY function for collecting random Bytes
- *        required by the tweetnacl package
+ *        required by the HACL* package
  */
 extern void randombytes(uint8_t *target, uint64_t n);
 
@@ -37,7 +37,7 @@ extern void randombytes(uint8_t *target, uint64_t n);
 void tests_hacl(void);
 
 /**
- * @brief   Generates tests for hacl
+ * @brief   Generates tests for HACL*
  *
  * @return  embUnit tests if successful, NULL if not.
  */
