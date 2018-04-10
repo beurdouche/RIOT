@@ -14,11 +14,17 @@
  * USEPKG += hacl
  * ```
  *
- * And don't forget to include the header:
+ * And don't forget to include the header for the HACL* standard API:
  *
  * ```c
- * #include <hacl.h>
+ * #include <HACL.h>
  * ```
+
+ * or for HACL*'s NaCl-compatible API:
  *
+ * ```c
+ * #include <haclnacl.h>
+ * ```
+*
  * @see     https://github.com/mitls/hacl-c
  */
